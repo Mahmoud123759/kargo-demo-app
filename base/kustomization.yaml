@@ -1,10 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: dev
+#namespace: dev
 resources:
   - deployment-rollout.yaml
   - analysistemplate.yaml
-  - cluster-roles.yaml
   - httproute.yaml
   - argo-rollouts-svc-canary.yaml
   - argo-rollouts-svc-stable.yaml

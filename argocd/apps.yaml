@@ -1,0 +1,30 @@
+
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-app
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+    - list:
+        elements:
+          - env: dev
+          - env: stage
+          - env: prod
+  template:
+    metadata:
+      name: gitops-app-{{.env}}
+      annotations:
+        kargo.akuity.io/authorized-stage: kargo-demo:{{.env}} # <kargo-project>:<stage>
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/Mahmoud123759/kargo-demo-app.git
+        targetRevision: main
+        path: overlays/{{.env}}
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{.env}}"
+      syncPolicy:
+        syncOptions: [CreateNamespace=true]

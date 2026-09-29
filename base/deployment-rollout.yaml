@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: argo-rollouts-app
-  namespace: dev
+  #namespace: dev
 spec:
   replicas: 3
   revisionHistoryLimit: 3
@@ -15,7 +15,7 @@ spec:
         plugins:
           argoproj-labs/gatewayAPI:
             httpRoute: argo-rollouts-http-route # our created httproute
-            namespace: dev # Optional: defaults to rollout namespace
+            #namespace: dev # Optional: defaults to rollout namespace
             # Optional: customize or disable the temporary label that marks routes as managed during a canary
             # inProgressLabelKey: rollouts.argoproj.io/gatewayapi-canary
             # inProgressLabelValue: in-progress
@@ -43,7 +43,7 @@ spec:
     spec:
       containers:
         - name: argo-rollouts-app
-          image: 345259854056.dkr.ecr.us-east-1.amazonaws.com/kargo-app:v1.0.0
+          image: 345259854056.dkr.ecr.us-east-1.amazonaws.com/kargo-app
           ports:
             - containerPort: 3000
           # env:
