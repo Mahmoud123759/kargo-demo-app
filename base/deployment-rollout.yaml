@@ -1,9 +1,7 @@
-
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: argo-rollouts-app
-  #namespace: dev
 spec:
   replicas: 3
   revisionHistoryLimit: 3
@@ -14,12 +12,7 @@ spec:
       trafficRouting:
         plugins:
           argoproj-labs/gatewayAPI:
-            httpRoute: argo-rollouts-http-route # our created httproute
-            namespace: dev # Optional: defaults to rollout namespace
-            # Optional: customize or disable the temporary label that marks routes as managed during a canary
-            # inProgressLabelKey: rollouts.argoproj.io/gatewayapi-canary
-            # inProgressLabelValue: in-progress
-            # disableInProgressLabel: false
+            httpRoute: argo-rollouts-http-route
       steps:
         - setWeight: 10
         - pause: {duration: 20}
@@ -46,11 +39,6 @@ spec:
           image: 345259854056.dkr.ecr.us-east-1.amazonaws.com/kargo-app
           ports:
             - containerPort: 3000
-          # env:
-          #   - name: APP_VERSION
-          #     value: "v1"
-          #   - name: APP_COLOR
-          #     value: "#2563eb"
           readinessProbe:
             httpGet:
               path: /readyz
