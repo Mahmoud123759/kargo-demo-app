@@ -1,9 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kargo-config
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Mahmoud123759/kargo-demo-app.git
+    targetRevision: main
+    path: kargo
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kargo-resources
+  syncPolicy:
+    automated: {}
 
+---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: gitops-app
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   goTemplate: true
   generators:

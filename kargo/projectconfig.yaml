@@ -2,7 +2,7 @@ apiVersion: kargo.akuity.io/v1alpha1
 kind: ProjectConfig
 metadata:
   name: kargo-resources
-  namespace: kargo-resources
+  #namespace: kargo-resources
 spec:
   promotionPolicies:
     - stageSelector: { name: dev }

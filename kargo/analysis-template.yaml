@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
   name: smoke-test
-  namespace: kargo-resources   # must be the Kargo project namespace
+  #namespace: kargo-resources   # must be the Kargo project namespace
 spec:
   args:
     - name: env
