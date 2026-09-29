@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
   name: argo-rollouts-analysis-template
-  namespace: gateway-app
+  namespace: dev
 spec:
   metrics:
     - name: success-rate
