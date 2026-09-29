@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: smoke-test
+  namespace: kargo-resources   # must be the Kargo project namespace
+spec:
+  args:
+    - name: env
+  metrics:
+    - name: healthz
+      count: 3
+      interval: 10s
+      failureLimit: 1
+      provider:
+        job:
+          spec:
+            backoffLimit: 0
+            template:
+              spec:
+                restartPolicy: Never
+                containers:
+                  - name: curl
+                    image: curlimages/curl:8.10.1
+                    command: [sh, -c]
+                    args:
+                      - curl -fsS http://argo-rollouts-svc-stable.{{args.env}}.svc.cluster.local/healthz
