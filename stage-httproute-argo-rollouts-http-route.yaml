@@ -1,0 +1,26 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: argo-rollouts-http-route
+  namespace: stage
+spec:
+  hostnames:
+  - app.api-test.registfylabs.online
+  parentRefs:
+  - name: gateway-api-listeners
+    namespace: kube-system
+    sectionName: https
+  rules:
+  - backendRefs:
+    - kind: Service
+      name: argo-rollouts-svc-stable
+      port: 80
+      weight: 100
+    - kind: Service
+      name: argo-rollouts-svc-canary
+      port: 80
+      weight: 0
+    matches:
+    - path:
+        type: PathPrefix
+        value: /

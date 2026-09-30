@@ -1,0 +1,10 @@
+apiVersion: gateway.k8s.aws/v1
+kind: TargetGroupConfiguration
+metadata:
+  name: argo-rollouts-tgc-canary
+  namespace: stage
+spec:
+  defaultConfiguration:
+    targetType: ip
+  targetReference:
+    name: argo-rollouts-svc-canary

@@ -1,0 +1,10 @@
+apiVersion: gateway.k8s.aws/v1
+kind: TargetGroupConfiguration
+metadata:
+  name: argo-rollouts-tgc-stable
+  namespace: stage
+spec:
+  defaultConfiguration:
+    targetType: ip
+  targetReference:
+    name: argo-rollouts-svc-stable
