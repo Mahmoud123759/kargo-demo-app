@@ -5,7 +5,7 @@ metadata:
   namespace: stage
 spec:
   hostnames:
-  - app.api-test.registfylabs.online
+  - stage.app.registfylabs.online
   parentRefs:
   - name: gateway-api-listeners
     namespace: kube-system
