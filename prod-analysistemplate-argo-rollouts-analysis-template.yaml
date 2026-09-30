@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: argo-rollouts-analysis-template
+  namespace: prod
+spec:
+  metrics:
+  - count: 5
+    failureLimit: 3
+    interval: 30s
+    name: success-rate
+    provider:
+      prometheus:
+        address: http://prometheus-server.prometheus.svc.cluster.local:80
+        query: |
+          (
+            sum(rate(frontend_requests_total{version="v2", status_code!~"5.."}[2m]))
+            /
+            sum(rate(frontend_requests_total{version="v2"}[2m]))
+          ) or vector(1)
+    successCondition: result[0] >= 0.95
+  - count: 5
+    failureLimit: 3
+    interval: 30s
+    name: p95-latency
+    provider:
+      prometheus:
+        address: http://prometheus-server.prometheus.svc.cluster.local:80
+        query: |-
+          histogram_quantile(0.95,
+            sum(rate(frontend_request_duration_seconds_bucket{version="v2"}[2m])) by (le)
+          ) or vector(0)
+    successCondition: result[0] < 0.5
