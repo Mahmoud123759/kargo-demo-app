@@ -14,3 +14,11 @@ patches:
       - op: add
         path: /spec/strategy/canary/trafficRouting/plugins/argoproj-labs~1gatewayAPI/namespace
         value: prod
+  - target:
+        kind: HTTPRoute
+        name: argo-rollouts-http-route
+    patch: |-
+        - op: add
+          path: /spec/hostnames
+          value:
+            - prod.app.registfylabs.online

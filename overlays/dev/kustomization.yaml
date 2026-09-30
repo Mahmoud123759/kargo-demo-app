@@ -7,10 +7,19 @@ images:
 - name: 345259854056.dkr.ecr.us-east-1.amazonaws.com/kargo-app
   newTag: v1.0.0 # Kargo overwrites this
 patches:
-- target:
-    kind: Rollout
-    name: argo-rollouts-app
-  patch: |-
-    - op: add
-      path: /spec/strategy/canary/trafficRouting/plugins/argoproj-labs~1gatewayAPI/namespace
-      value: dev
+  - target:
+      kind: Rollout
+      name: argo-rollouts-app
+    patch: |-
+      - op: add
+        path: /spec/strategy/canary/trafficRouting/plugins/argoproj-labs~1gatewayAPI/namespace
+        value: dev
+
+  - target:
+        kind: HTTPRoute
+        name: argo-rollouts-http-route
+    patch: |-
+        - op: add
+          path: /spec/hostnames
+          value:
+            - dev.app.registfylabs.online

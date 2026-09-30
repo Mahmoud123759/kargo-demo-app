@@ -10,7 +10,7 @@ spec:
       sectionName: https
 
   hostnames:
-    - "app.api-test.registfylabs.online"
+    - "app.registfylabs.online "
 
   rules:
     - matches:
