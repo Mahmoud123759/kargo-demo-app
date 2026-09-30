@@ -5,7 +5,7 @@ metadata:
   namespace: dev
 spec:
   hostnames:
-  - app.api-test.registfylabs.online
+  - dev.app.registfylabs.online
   parentRefs:
   - name: gateway-api-listeners
     namespace: kube-system
