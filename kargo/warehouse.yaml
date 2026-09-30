@@ -5,7 +5,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
-  interval: 2m
+  interval: "5s"
   subscriptions:
     - image:
         repoURL: 345259854056.dkr.ecr.us-east-1.amazonaws.com/kargo-app
