@@ -1,0 +1,66 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: argo-rollouts-app
+  namespace: dev
+spec:
+  replicas: 3
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: app-demo
+  strategy:
+    canary:
+      canaryService: argo-rollouts-svc-canary
+      stableService: argo-rollouts-svc-stable
+      steps:
+      - setWeight: 10
+      - pause:
+          duration: 20
+      - analysis:
+          templates:
+          - templateName: argo-rollouts-analysis-template
+      - setWeight: 25
+      - pause:
+          duration: 20
+      - setWeight: 50
+      - pause:
+          duration: 20
+      - setWeight: 75
+      - pause:
+          duration: 30
+      - setWeight: 100
+      trafficRouting:
+        plugins:
+          argoproj-labs/gatewayAPI:
+            httpRoute: argo-rollouts-http-route
+            namespace: dev
+  template:
+    metadata:
+      labels:
+        app: app-demo
+    spec:
+      containers:
+      - image: 345259854056.dkr.ecr.us-east-1.amazonaws.com/kargo-app:v1.0.0
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        name: argo-rollouts-app
+        ports:
+        - containerPort: 3000
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 3000
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        resources:
+          limits:
+            cpu: 200m
+            memory: 128Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
