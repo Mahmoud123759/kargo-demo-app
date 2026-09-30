@@ -2,7 +2,8 @@ apiVersion: kargo.akuity.io/v1alpha1
 kind: Warehouse
 metadata:
   name: kargo
-  #namespace: kargo-resources
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   interval: 2m
   subscriptions:

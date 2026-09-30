@@ -2,18 +2,14 @@ apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
   name: dev
-  #namespace: kargo-resources
+  namespace: kargo-resources
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   requestedFreight:
     - origin: { kind: Warehouse, name: kargo }
       sources:
         direct: true
-  verification:
-    analysisTemplates:
-      - name: smoke-test
-    args:
-      - name: env
-        value: dev 
   promotionTemplate:
     spec:
       vars:
@@ -30,20 +26,29 @@ spec:
             checkout:
               - branch: main
                 path: ./src
+              - branch: ${{ vars.env }}
+                path: ./out
+        - uses: git-clear
+          config:
+            path: ./out
         - uses: kustomize-set-image
           config:
             path: ./src/overlays/${{ vars.env }}
             images:
               - image: ${{ vars.imageRepo }}
                 tag: ${{ imageFrom(vars.imageRepo).Tag }}
+        - uses: kustomize-build
+          config:
+            path: ./src/overlays/${{ vars.env }}
+            outPath: ./out
         - uses: git-commit
           as: commit
           config:
-            path: ./src
-            message: "${{ vars.env }}: bump myapp to ${{ imageFrom(vars.imageRepo).Tag }}"
+            path: ./out
+            message: "${{ vars.env }}: bump kargo-app to ${{ imageFrom(vars.imageRepo).Tag }}"
         - uses: git-push
           config:
-            path: ./src
+            path: ./out
         - uses: argocd-update
           config:
             apps:
@@ -52,23 +57,25 @@ spec:
                 sources:
                   - repoURL: ${{ vars.gitRepo }}
                     desiredRevision: ${{ outputs.commit.commit }}
+  verification:
+    analysisTemplates:
+      - name: smoke-test
+    args:
+      - name: env
+        value: dev
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
   name: stage
   namespace: kargo-resources
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   requestedFreight:
     - origin: { kind: Warehouse, name: kargo }
       sources:
         stages: [dev]
-  verification:
-    analysisTemplates:
-      - name: smoke-test
-    args:
-      - name: env
-        value: stage
   promotionTemplate:
     spec:
       vars:
@@ -85,20 +92,29 @@ spec:
             checkout:
               - branch: main
                 path: ./src
+              - branch: ${{ vars.env }}
+                path: ./out
+        - uses: git-clear
+          config:
+            path: ./out
         - uses: kustomize-set-image
           config:
             path: ./src/overlays/${{ vars.env }}
             images:
               - image: ${{ vars.imageRepo }}
                 tag: ${{ imageFrom(vars.imageRepo).Tag }}
+        - uses: kustomize-build
+          config:
+            path: ./src/overlays/${{ vars.env }}
+            outPath: ./out
         - uses: git-commit
           as: commit
           config:
-            path: ./src
-            message: "${{ vars.env }}: bump myapp to ${{ imageFrom(vars.imageRepo).Tag }}"
+            path: ./out
+            message: "${{ vars.env }}: bump kargo-app to ${{ imageFrom(vars.imageRepo).Tag }}"
         - uses: git-push
           config:
-            path: ./src
+            path: ./out
         - uses: argocd-update
           config:
             apps:
@@ -107,23 +123,25 @@ spec:
                 sources:
                   - repoURL: ${{ vars.gitRepo }}
                     desiredRevision: ${{ outputs.commit.commit }}
+  verification:
+    analysisTemplates:
+      - name: smoke-test
+    args:
+      - name: env
+        value: stage
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
   name: prod
   namespace: kargo-resources
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   requestedFreight:
     - origin: { kind: Warehouse, name: kargo }
       sources:
         stages: [stage]
-  verification:
-    analysisTemplates:
-      - name: smoke-test
-    args:
-      - name: env
-        value: prod 
   promotionTemplate:
     spec:
       vars:
@@ -140,20 +158,29 @@ spec:
             checkout:
               - branch: main
                 path: ./src
+              - branch: ${{ vars.env }}
+                path: ./out
+        - uses: git-clear
+          config:
+            path: ./out
         - uses: kustomize-set-image
           config:
             path: ./src/overlays/${{ vars.env }}
             images:
               - image: ${{ vars.imageRepo }}
                 tag: ${{ imageFrom(vars.imageRepo).Tag }}
+        - uses: kustomize-build
+          config:
+            path: ./src/overlays/${{ vars.env }}
+            outPath: ./out
         - uses: git-commit
           as: commit
           config:
-            path: ./src
-            message: "${{ vars.env }}: bump myapp to ${{ imageFrom(vars.imageRepo).Tag }}"
+            path: ./out
+            message: "${{ vars.env }}: bump kargo-app to ${{ imageFrom(vars.imageRepo).Tag }}"
         - uses: git-push
           config:
-            path: ./src
+            path: ./out
         - uses: argocd-update
           config:
             apps:
@@ -162,3 +189,9 @@ spec:
                 sources:
                   - repoURL: ${{ vars.gitRepo }}
                     desiredRevision: ${{ outputs.commit.commit }}
+  verification:
+    analysisTemplates:
+      - name: smoke-test
+    args:
+      - name: env
+        value: prod

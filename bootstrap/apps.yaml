@@ -42,14 +42,10 @@ spec:
       project: default
       source:
         repoURL: https://github.com/Mahmoud123759/kargo-demo-app.git
-        targetRevision: main
-        path: overlays/{{.env}}
+        targetRevision: "{{.env}}"
+        path: .
       destination:
         server: https://kubernetes.default.svc
         namespace: "{{.env}}"
       syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
-        syncOptions:
-          - CreateNamespace=true
+        syncOptions: [CreateNamespace=true]
