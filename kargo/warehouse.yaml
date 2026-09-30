@@ -10,5 +10,6 @@ spec:
     - image:
         repoURL: 345259854056.dkr.ecr.us-east-1.amazonaws.com/kargo-app
         imageSelectionStrategy: SemVer      # or NewestBuild
-        constraint: ^1.0.0
+        constraint: ">=1.0.0"
         discoveryLimit: 10
+  
