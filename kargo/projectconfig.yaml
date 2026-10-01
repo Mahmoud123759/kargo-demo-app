@@ -1,7 +1,7 @@
 apiVersion: kargo.akuity.io/v1alpha1
 kind: ProjectConfig
 metadata:
-  name: kargo-resources
+  name: kargo-resources # kargo requires the ProjectConfig to have the same name as the associated Project and to live in that Project's namespace
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
@@ -12,3 +12,6 @@ spec:
       autoPromotionEnabled: true
     - stageSelector: { name: prod }
       autoPromotionEnabled: false
+
+# It configures the rules for the Project like Promotion policies, Auto-promotionAuto-rollback,  configuration Promotion windows
+# For example dev   → automatic promotion, stage → automatic promotion, prod  → manual promotion

@@ -1,8 +1,7 @@
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
-  name: dev
-  namespace: kargo-resources
+  name: dev       # it describes things such as which Freight it can use, how promotion happens, how verification works
   annotations:
     argocd.argoproj.io/sync-wave: "3"
 spec:
@@ -68,7 +67,6 @@ apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
   name: stage
-  namespace: kargo-resources
   annotations:
     argocd.argoproj.io/sync-wave: "3"
 spec:
@@ -134,7 +132,6 @@ apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
   name: prod
-  namespace: kargo-resources
   annotations:
     argocd.argoproj.io/sync-wave: "3"
 spec:

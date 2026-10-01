@@ -13,3 +13,4 @@ spec:
         constraint: ">=1.0.0"
         discoveryLimit: 10
   
+# it creates Freight representing the artifact revisions that can move through your pipeline however The Warehouse does not deploy your application
