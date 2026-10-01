@@ -4,6 +4,8 @@ metadata:
   name: argo-rollouts-analysis-template
   namespace: dev
 spec:
+  args:
+  - name: canary-hash
   metrics:
   - count: 5
     failureLimit: 3
@@ -14,9 +16,9 @@ spec:
         address: http://prometheus-server.default.svc.cluster.local:80
         query: |
           (
-            sum(rate(frontend_requests_total{version="v2", status_code!~"5.."}[2m]))
+            sum(rate(frontend_requests_total{pod=~"argo-rollouts-app-{{args.canary-hash}}-.*", status_code!~"5.."}[2m]))
             /
-            sum(rate(frontend_requests_total{version="v2"}[2m]))
+            sum(rate(frontend_requests_total{pod=~"argo-rollouts-app-{{args.canary-hash}}-.*"}[2m]))
           ) or vector(1)
     successCondition: result[0] >= 0.95
   - count: 5
@@ -28,6 +30,6 @@ spec:
         address: http://prometheus-server.default.svc.cluster.local:80
         query: |-
           histogram_quantile(0.95,
-            sum(rate(frontend_request_duration_seconds_bucket{version="v2"}[2m])) by (le)
+            sum(rate(frontend_request_duration_seconds_bucket{pod=~"argo-rollouts-app-{{args.canary-hash}}-.*"}[2m])) by (le)
           ) or vector(0)
     successCondition: result[0] < 0.5
