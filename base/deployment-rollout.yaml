@@ -19,6 +19,11 @@ spec:
         - analysis:
             templates:
               - templateName: argo-rollouts-analysis-template
+            args:
+              - name: canary-hash
+                valueFrom:
+                  podTemplateHashValue: Latest
+            
         - setWeight: 25
         - pause: {duration: 20}
         - setWeight: 50
