@@ -9,6 +9,6 @@ spec:
     - stageSelector: { name: dev }
       autoPromotionEnabled: true
     - stageSelector: { name: stage }
-      autoPromotionEnabled: false
+      autoPromotionEnabled: true
     - stageSelector: { name: prod }
       autoPromotionEnabled: false
