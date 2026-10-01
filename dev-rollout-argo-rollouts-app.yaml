@@ -45,7 +45,7 @@ spec:
         app: app-demo
     spec:
       containers:
-      - image: 345259854056.dkr.ecr.us-east-1.amazonaws.com/kargo-app:v2.0.0
+      - image: 345259854056.dkr.ecr.us-east-1.amazonaws.com/kargo-app:v1.0.0
         livenessProbe:
           httpGet:
             path: /healthz
