@@ -4,29 +4,29 @@
 #   name: kargo-resources  # this manifest use to create namespace for project resources
 
 
-                    kargo-demo
-                     Project
-                        │
-            ┌───────────┴───────────┐
-            │                       │
-      ProjectConfig             Warehouse
-            │                       │
-      pipeline rules               ECR
-                                    │
-                              new image v1.2.0
-                                    │
-                                    ↓
-                                  Freight
-                                    │
-                                    ↓
-                                  dev
-                                    │
-                          automatic promotion
-                                    ↓
-                                 stage
-                                    │
-                          automatic promotion
-                                    ↓
-                                  prod
-                                    │
-                           manual promotion
+#                     kargo-demo
+#                      Project
+#                         │
+#             ┌───────────┴───────────┐
+#             │                       │
+#       ProjectConfig             Warehouse
+#             │                       │
+#       pipeline rules               ECR
+#                                     │
+#                               new image v1.2.0
+#                                     │
+#                                     ↓
+#                                   Freight
+#                                     │
+#                                     ↓
+#                                   dev
+#                                     │
+#                           automatic promotion
+#                                     ↓
+#                                  stage
+#                                     │
+#                           automatic promotion
+#                                     ↓
+#                                   prod
+#                                     │
+#                            manual promotion
